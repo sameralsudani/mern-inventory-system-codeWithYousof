@@ -16,23 +16,23 @@ const Login = () => {
   // Translations object
   const translations = {
     en: {
-      title: "Inventory (POS) Management System",
+      title: "Inventory Management System",
       login: "Login",
       email: "Email",
       password: "Password",
-      enterEmail: "Enter Email",
-      enterPassword: "Enter Password",
+      enterEmail: "Enter your email",
+      enterPassword: "Enter your password",
       loggingIn: "Logging in...",
       error: "An error occurred. Please try again.",
       emptyEmail: "Email is required.",
       emptyPassword: "Password is required.",
     },
     ar: {
-      title: "نظام إدارة المخزون (نقاط البيع)",
+      title: "نظام إدارة المخزون",
       login: "تسجيل الدخول",
       email: "البريد الإلكتروني",
       password: "كلمة المرور",
-      enterEmail: "أدخل البريد الإلكتروني",
+      enterEmail: "أدخل بريدك الإلكتروني",
       enterPassword: "أدخل كلمة المرور",
       loggingIn: "جارٍ تسجيل الدخول...",
       error: "حدث خطأ. يرجى المحاولة مرة أخرى.",
@@ -96,10 +96,19 @@ const Login = () => {
     <div
       className={`flex flex-col items-center min-h-screen justify-center ${
         language === "ar" ? "text-right" : "text-left"
-      } bg-gradient-to-b from-green-600 from-50% to-gray-100 to-50% space-y-8`}
+      } bg-cover bg-center relative`}
+      style={{
+        backgroundImage: `url('/images/store-background.jpg')`, // Replace with the path to your store-related background image
+      }}
     >
-      <div className="border shadow-lg p-8 w-full max-w-md bg-white rounded-lg">
-        <h2 className="text-3xl font-bold mb-6">{t("login")}</h2>
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-black bg-opacity-50"></div>
+
+      {/* Login Card */}
+      <div className="relative z-10 border shadow-lg p-8 w-full max-w-md bg-white rounded-lg">
+        <h1 className="text-2xl font-bold text-center mb-6 text-gray-800">
+          {t("title")}
+        </h1>
         {errorMessage && <p className="text-red-500 mb-4">{errorMessage}</p>}
         <form onSubmit={handleLogin}>
           <div className="mb-6">
