@@ -4,23 +4,15 @@ const LanguageSwitcher = () => {
   const { language, setLanguage } = useLanguage(); // Get language and setLanguage from context
 
   return (
-    <div className="flex space-x-2">
-      <button
-        onClick={() => setLanguage("en")}
-        className={`px-4 py-2 rounded ${
-          language === "en" ? "bg-blue-500 text-white" : "bg-gray-300"
-        }`}
+    <div className="relative">
+      <select
+        value={language}
+        onChange={(e) => setLanguage(e.target.value)}
+        className="px-4 py-2 border rounded bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
       >
-        English
-      </button>
-      <button
-        onClick={() => setLanguage("ar")}
-        className={`px-4 py-2 rounded ${
-          language === "ar" ? "bg-green-500 text-white" : "bg-gray-300"
-        }`}
-      >
-        العربية
-      </button>
+        <option value="en">English</option>
+        <option value="ar">العربية</option>
+      </select>
     </div>
   );
 };

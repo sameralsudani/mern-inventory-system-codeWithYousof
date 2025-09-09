@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import axiosInstance from "../utils/api";
 import { useLanguage } from "../context/LanguageContext"; // Import useLanguage hook
-import LanguageSwitcher from "../components/LanguageSwitcher";
 
 const Products = () => {
   const { language } = useLanguage(); // Get language from context
@@ -216,10 +215,7 @@ const Products = () => {
         language === "ar" ? "text-right" : "text-left"
       }`} /* Dynamically apply text alignment */
     >
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-gray-800">{t("title")}</h1>
-        <LanguageSwitcher />
-      </div>
+     
 
       {/* Search and Add Product Button */}
       <div
