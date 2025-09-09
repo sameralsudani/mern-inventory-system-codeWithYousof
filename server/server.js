@@ -28,7 +28,7 @@ app.use(cors({
 		}
 		return callback(null, true);
 	},
-	credentials: true // Important if you are sending cookies or authorization headers
+	credentials: false // Important if you are sending cookies or authorization headers
 }));app.use(express.json());
 
 app.use("/api/dashboard", dashboardRouter);
