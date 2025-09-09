@@ -1,8 +1,56 @@
-// src/components/Products.jsx
-import React, { useState, useEffect } from "react";
+import{ useState, useEffect } from "react";
 import axiosInstance from "../utils/api";
+import { useLanguage } from "../context/LanguageContext"; // Import useLanguage hook
 
 const EmployeeProducts = () => {
+  const { language } = useLanguage(); // Get the current language from context
+
+  // Translations object
+  const translations = {
+    en: {
+      products: "Products",
+      loading: "Loading...",
+      selectCategory: "Select Category",
+      searchPlaceholder: "Search products...",
+      id: "ID",
+      name: "Name",
+      category: "Category",
+      price: "Price",
+      stock: "Stock",
+      action: "Action",
+      order: "Order",
+      noProducts: "No products found",
+      placeOrder: "Place Order",
+      quantity: "Quantity",
+      total: "Total",
+      cancel: "Cancel",
+      notEnoughStock: "Not enough stock",
+      orderPlaced: "Order placed successfully!",
+    },
+    ar: {
+      products: "المنتجات",
+      loading: "جارٍ التحميل...",
+      selectCategory: "اختر الفئة",
+      searchPlaceholder: "ابحث عن المنتجات...",
+      id: "المعرف",
+      name: "الاسم",
+      category: "الفئة",
+      price: "السعر",
+      stock: "المخزون",
+      action: "الإجراء",
+      order: "طلب",
+      noProducts: "لم يتم العثور على منتجات",
+      placeOrder: "إتمام الطلب",
+      quantity: "الكمية",
+      total: "الإجمالي",
+      cancel: "إلغاء",
+      notEnoughStock: "لا يوجد مخزون كافٍ",
+      orderPlaced: "تم تقديم الطلب بنجاح!",
+    },
+  };
+
+  const t = (key) => translations[language][key]; // Translation function
+
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [products, setProducts] = useState([]);
@@ -16,9 +64,6 @@ const EmployeeProducts = () => {
     price: 0,
   });
   const [loading, setLoading] = useState(false);
-
-  // Dummy user ID (in real app, get this from auth context)
-  const userId = "dummy-user-id";
 
   // Fetch products when category changes
   const fetchProducts = async () => {
@@ -40,6 +85,7 @@ const EmployeeProducts = () => {
       setLoading(false);
     }
   };
+
   useEffect(() => {
     fetchProducts();
   }, []);
@@ -72,8 +118,7 @@ const EmployeeProducts = () => {
 
   const IncreaseQuantity = (e) => {
     if (e.target.value > orderData.stock) {
-      alert("Not enough stock");
-      // e.target.value = orderData.stock;
+      alert(t("notEnoughStock"));
     } else {
       setOrderData((prev) => ({
         ...prev,
@@ -92,12 +137,11 @@ const EmployeeProducts = () => {
           Authorization: `Bearer ${localStorage.getItem("ims_token")}`,
         },
       });
-      console.log(response.data);
       if (response.data.success) {
         setIsModalOpen(false);
         setOrderData({ productId: "", quantity: 1, total: 0 });
         fetchProducts();
-        alert("order placed");
+        alert(t("orderPlaced"));
       }
     } catch (err) {
       alert(err.message);
@@ -108,9 +152,9 @@ const EmployeeProducts = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Products</h1>
+      <h1 className="text-2xl font-bold mb-4">{t("products")}</h1>
 
-      {loading && <p className="text-gray-500 mb-4">Loading...</p>}
+      {loading && <p className="text-gray-500 mb-4">{t("loading")}</p>}
 
       {/* Category Dropdown and Search */}
       <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
@@ -120,7 +164,7 @@ const EmployeeProducts = () => {
           className="w-full sm:w-1/3 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           disabled={loading}
         >
-          <option value="">Select Category</option>
+          <option value="">{t("selectCategory")}</option>
           {categories.map((category) => (
             <option key={category._id} value={category._id}>
               {category.name}
@@ -130,7 +174,7 @@ const EmployeeProducts = () => {
         <input
           type="text"
           onChange={handleFilterProducts}
-          placeholder="Search products..."
+          placeholder={t("searchPlaceholder")}
           className="w-full sm:w-1/3 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           disabled={loading}
         />
@@ -141,12 +185,12 @@ const EmployeeProducts = () => {
         <table className="min-w-full">
           <thead>
             <tr className="bg-gray-100">
-              <th className="p-2 text-left">ID</th>
-              <th className="p-2 text-left">Name</th>
-              <th className="p-2 text-left">Category</th>
-              <th className="p-2 text-left">Price</th>
-              <th className="p-2 text-left">Stock</th>
-              <th className="p-2 text-left">Action</th>
+              <th className="p-2 text-left">{t("id")}</th>
+              <th className="p-2 text-left">{t("name")}</th>
+              <th className="p-2 text-left">{t("category")}</th>
+              <th className="p-2 text-left">{t("price")}</th>
+              <th className="p-2 text-left">{t("stock")}</th>
+              <th className="p-2 text-left">{t("action")}</th>
             </tr>
           </thead>
           <tbody>
@@ -163,7 +207,7 @@ const EmployeeProducts = () => {
                     className="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600 disabled:bg-green-300"
                     disabled={loading || product.stock === 0}
                   >
-                    Order
+                    {t("order")}
                   </button>
                 </td>
               </tr>
@@ -171,7 +215,7 @@ const EmployeeProducts = () => {
           </tbody>
         </table>
         {filterProducts.length === 0 && !loading && (
-          <p className="text-center p-4 text-gray-500">No products found</p>
+          <p className="text-center p-4 text-gray-500">{t("noProducts")}</p>
         )}
       </div>
 
@@ -179,11 +223,11 @@ const EmployeeProducts = () => {
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-lg p-6 w-full max-w-md">
-            <h2 className="text-xl font-semibold mb-4">Place Order</h2>
+            <h2 className="text-xl font-semibold mb-4">{t("placeOrder")}</h2>
             <form onSubmit={handleOrderSubmit} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Quantity
+                  {t("quantity")}
                 </label>
                 <input
                   type="number"
@@ -196,7 +240,9 @@ const EmployeeProducts = () => {
                 />
               </div>
               <div>
-                <strong>Total: {orderData.total}</strong>
+                <strong>
+                  {t("total")}: {orderData.total}
+                </strong>
               </div>
               <div className="flex gap-2">
                 <button
@@ -204,7 +250,7 @@ const EmployeeProducts = () => {
                   className="flex-1 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 disabled:bg-green-300"
                   disabled={loading}
                 >
-                  Place Order
+                  {t("placeOrder")}
                 </button>
                 <button
                   type="button"
@@ -212,7 +258,7 @@ const EmployeeProducts = () => {
                   className="flex-1 bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 disabled:bg-gray-300"
                   disabled={loading}
                 >
-                  Cancel
+                  {t("cancel")}
                 </button>
               </div>
             </form>

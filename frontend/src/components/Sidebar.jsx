@@ -72,10 +72,7 @@ const Sidebar = () => {
         language === 'ar' ? 'text-right' : 'text-left'
       }`}
     >
-      <div className="h-16 flex items-center justify-center md:justify-start md:pl-6">
-        <span className="hidden md:block text-xl font-bold">{t('title')}</span>
-        <span className="block md:hidden text-xl font-bold">{t('shortTitle')}</span>
-      </div>
+     
 
       <nav className="flex-1">
         <ul className="space-y-2 p-2">
@@ -91,12 +88,17 @@ const Sidebar = () => {
                 }
               >
                 <span className="text-xl">{item.icon}</span>
-                <span className="ml-4 hidden md:block">{item.name}</span>
+                <span
+                  className={`${
+                    language === 'ar' ? 'mr-4' : 'ml-4'
+                  } hidden md:block`}
+                >
+                  {item.name}
+                </span>
               </NavLink>
             </li>
           ))}
         </ul>
-       
       </nav>
     </div>
   );

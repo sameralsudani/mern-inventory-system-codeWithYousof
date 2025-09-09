@@ -1,8 +1,59 @@
 // Users.jsx
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axiosInstance from "../utils/api";
+import { useLanguage } from "../context/LanguageContext"; // Import useLanguage hook
 
 const Users = () => {
+  const { language } = useLanguage(); // Get the current language from context
+
+  // Translations object
+  const translations = {
+    en: {
+      title: "Users Management",
+      addUser: "Add New User",
+      userName: "User Name",
+      userEmail: "User Email",
+      password: "Password",
+      userAddress: "User Address",
+      selectRole: "Select Role",
+      admin: "Admin",
+      user: "User",
+      add: "Add User",
+      searchPlaceholder: "Search users...",
+      id: "ID",
+      name: "Name",
+      email: "Email",
+      role: "Role",
+      action: "Action",
+      delete: "Delete",
+      noUsers: "No users found",
+      loading: "Loading...",
+    },
+    ar: {
+      title: "إدارة المستخدمين",
+      addUser: "إضافة مستخدم جديد",
+      userName: "اسم المستخدم",
+      userEmail: "البريد الإلكتروني للمستخدم",
+      password: "كلمة المرور",
+      userAddress: "عنوان المستخدم",
+      selectRole: "اختر الدور",
+      admin: "مشرف",
+      user: "مستخدم",
+      add: "إضافة مستخدم",
+      searchPlaceholder: "ابحث عن المستخدمين...",
+      id: "المعرف",
+      name: "الاسم",
+      email: "البريد الإلكتروني",
+      role: "الدور",
+      action: "الإجراء",
+      delete: "حذف",
+      noUsers: "لم يتم العثور على مستخدمين",
+      loading: "جارٍ التحميل...",
+    },
+  };
+
+  const t = (key) => translations[language]?.[key] || key; // Translation function with fallback
+
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [formData, setFormData] = useState({
@@ -40,7 +91,6 @@ const Users = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Add new category
     try {
       const token = localStorage.getItem("ims_token");
       const response = await axiosInstance.post("/users/add", formData, {
@@ -83,24 +133,22 @@ const Users = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div>{t("loading")}</div>;
   }
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Users Management</h1>
+      <h1 className="text-2xl font-bold mb-4">{t("title")}</h1>
 
       <div className="flex flex-col lg:flex-row gap-6">
         {/* Left Column - Add/Edit Form */}
         <div className="lg:w-1/3">
           <div className="bg-white p-4 rounded-lg shadow">
-            <h2 className="text-lg font-semibold mb-4">
-              Add New User
-            </h2>
+            <h2 className="text-lg font-semibold mb-4">{t("addUser")}</h2>
             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            <div>
+              <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Uer Name
+                  {t("userName")}
                 </label>
                 <input
                   type="text"
@@ -108,13 +156,13 @@ const Users = () => {
                   onChange={(e) =>
                     setFormData({ ...formData, name: e.target.value })
                   }
-                  placeholder="Enter Name"
+                  placeholder={t("userName")}
                   className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  User Email
+                  {t("userEmail")}
                 </label>
                 <input
                   type="email"
@@ -122,13 +170,13 @@ const Users = () => {
                   onChange={(e) =>
                     setFormData({ ...formData, email: e.target.value })
                   }
-                  placeholder="Enter Email"
+                  placeholder={t("userEmail")}
                   className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Password
+                  {t("password")}
                 </label>
                 <input
                   type="password"
@@ -142,7 +190,7 @@ const Users = () => {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  User Address
+                  {t("userAddress")}
                 </label>
                 <input
                   type="text"
@@ -150,26 +198,25 @@ const Users = () => {
                   onChange={(e) =>
                     setFormData({ ...formData, address: e.target.value })
                   }
-                  placeholder="Enter Address"
+                  placeholder={t("userAddress")}
                   className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
               <select
                 name="role"
-                id=""
                 onChange={(e) => setFormData({ ...formData, role: e.target.value })}
                 className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="">Select Role</option>
-                <option value="admin">Admin</option>
-                <option value="user">User</option>
+                <option value="">{t("selectRole")}</option>
+                <option value="admin">{t("admin")}</option>
+                <option value="user">{t("user")}</option>
               </select>
               <div className="flex gap-2">
                 <button
                   type="submit"
-                  className={`flex-1 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md`}
+                  className="flex-1 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
                 >
-                  Add User
+                  {t("add")}
                 </button>
               </div>
             </form>
@@ -182,7 +229,7 @@ const Users = () => {
             <input
               type="text"
               onChange={handleSearchInput}
-              placeholder="Search users..."
+              placeholder={t("searchPlaceholder")}
               className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -191,26 +238,44 @@ const Users = () => {
             <table className="min-w-full">
               <thead>
                 <tr className="bg-gray-100">
-                  <th className="p-2 text-left">ID</th>
-                  <th className="p-2 text-left">Name</th>
-                  <th className="p-2 text-left">Email</th>
-                  <th className="p-2 text-left">Role</th>
-                  <th className="p-2 text-left">Action</th>
+                  <th className={`p-2 ${language === "ar" ? "text-right" : "text-left"}`}>
+                    {t("id")}
+                  </th>
+                  <th className={`p-2 ${language === "ar" ? "text-right" : "text-left"}`}>
+                    {t("name")}
+                  </th>
+                  <th className={`p-2 ${language === "ar" ? "text-right" : "text-left"}`}>
+                    {t("email")}
+                  </th>
+                  <th className={`p-2 ${language === "ar" ? "text-right" : "text-left"}`}>
+                    {t("role")}
+                  </th>
+                  <th className={`p-2 ${language === "ar" ? "text-right" : "text-left"}`}>
+                    {t("action")}
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {filteredUsers.map((user, index) => (
                   <tr key={index} className="border-t">
-                    <td className="p-2">{index + 1}</td>
-                    <td className="p-2">{user.name}</td>
-                    <td className="p-2">{user.email}</td>
-                    <td className="p-2">{user.role}</td>
-                    <td className="p-2 flex gap-2">
+                    <td className={`p-2 ${language === "ar" ? "text-right" : "text-left"}`}>
+                      {index + 1}
+                    </td>
+                    <td className={`p-2 ${language === "ar" ? "text-right" : "text-left"}`}>
+                      {user.name}
+                    </td>
+                    <td className={`p-2 ${language === "ar" ? "text-right" : "text-left"}`}>
+                      {user.email}
+                    </td>
+                    <td className={`p-2 ${language === "ar" ? "text-right" : "text-left"}`}>
+                      {user.role}
+                    </td>
+                    <td className={`p-2 ${language === "ar" ? "text-right" : "text-left"} flex gap-2`}>
                       <button
-                        onClick={() => handleDelete(category._id)}
+                        onClick={() => handleDelete(user._id)}
                         className="text-red-500 font-bold"
                       >
-                        Delete
+                        {t("delete")}
                       </button>
                     </td>
                   </tr>
@@ -218,7 +283,7 @@ const Users = () => {
               </tbody>
             </table>
             {filteredUsers.length === 0 && (
-              <p className="text-center p-4 text-gray-500">No User found</p>
+              <p className="text-center p-4 text-gray-500">{t("noUsers")}</p>
             )}
           </div>
         </div>

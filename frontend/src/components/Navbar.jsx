@@ -1,10 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "../context/LanguageContext"; // Import useLanguage from context
+import { useAuth } from "../context/AuthContext"; // Import useAuth from context
 import LanguageSwitcher from "./LanguageSwitcher"; // Import LanguageSwitcher
 import { useEffect } from "react";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const { user } = useAuth(); // Get user from AuthContext
 
   // Translations for Navbar
   const translations = {
@@ -43,12 +45,14 @@ const Navbar = () => {
 
       {/* Login Button and Language Switcher */}
       <div className="flex items-center gap-4">
-        <button
-          onClick={() => navigate("/login")}
-          className="bg-white text-green-700 px-4 py-2 rounded hover:bg-gray-200"
-        >
-          {t("login")}
-        </button>
+        {!user && ( // Only show the Login button if the user is not logged in
+          <button
+            onClick={() => navigate("/login")}
+            className="bg-white text-green-700 px-4 py-2 rounded hover:bg-gray-200"
+          >
+            {t("login")}
+          </button>
+        )}
         <LanguageSwitcher /> {/* Add LanguageSwitcher here */}
       </div>
     </nav>
