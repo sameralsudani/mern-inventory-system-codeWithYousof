@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axiosInstance from "../utils/api";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import LanguageSwitcher from "../components/LanguageSwitcher"; // Import LanguageSwitcher
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -24,10 +25,10 @@ const Login = () => {
       // Handle success
       if (response.data.success) {
         await login(response.data.user, response.data.token);
-        if(response.data.user.role === "admin") {
+        if (response.data.user.role === "admin") {
           navigate("/admin-dashboard");
         } else {
-          navigate("/employee-dashboard")
+          navigate("/employee-dashboard");
         }
       } else {
         alert(response.data.error);
@@ -36,7 +37,7 @@ const Login = () => {
       if (error.response && error.response.data.message) {
         setErrorMessage(error.response.data.message);
       } else {
-        setErrorMessage("error occurred. Please try again.");
+        setErrorMessage("An error occurred. Please try again.");
       }
     } finally {
       setLoading(false);
@@ -82,6 +83,9 @@ const Login = () => {
             </button>
           </div>
         </form>
+        <div className="mt-4">
+          <LanguageSwitcher /> {/* Add LanguageSwitcher here */}
+        </div>
       </div>
     </div>
   );

@@ -35,7 +35,7 @@ To run this project locally, follow these steps:
 
    # Start the frontend server
    cd frontend
-   npm start
+   npm run dev
 
 
 **Additional Notes**

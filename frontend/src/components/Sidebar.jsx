@@ -1,46 +1,82 @@
-import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { FaHome, FaBox, FaShoppingCart, FaTruck, FaChartBar, FaUsers, FaCog, FaSignOutAlt, FaTable } from 'react-icons/fa';
+import {
+  FaHome,
+  FaBox,
+  FaShoppingCart,
+  FaTruck,
+  FaUsers,
+  FaCog,
+  FaSignOutAlt,
+  FaTable,
+} from 'react-icons/fa';
+import { useLanguage } from '../context/LanguageContext'; // Import useLanguage hook
 
 const Sidebar = () => {
+  const { language } = useLanguage(); // Get language from context
+
+  const translations = {
+    en: {
+      title: 'Inventory MS',
+      shortTitle: 'IMS',
+      Dashboard: 'Dashboard',
+      Products: 'Products',
+      Categories: 'Categories',
+      Orders: 'Orders',
+      Suppliers: 'Suppliers',
+      Users: 'Users',
+      Profile: 'Profile',
+      Logout: 'Logout',
+    },
+    ar: {
+      title: 'نظام إدارة المخزون',
+      shortTitle: 'نظام',
+      Dashboard: 'لوحة القيادة',
+      Products: 'المنتجات',
+      Categories: 'الفئات',
+      Orders: 'الطلبات',
+      Suppliers: 'الموردون',
+      Users: 'المستخدمون',
+      Profile: 'الملف الشخصي',
+      Logout: 'تسجيل الخروج',
+    },
+  };
+
+  const t = (key) => translations[language][key]; // Translation function
+
+  const user = JSON.parse(localStorage.getItem('ims_user'));
+  console.log('User:', user); // Debugging log
+
   const menuItems = [
-    { name: 'Dashboard', path: '/', icon: <FaHome />, isParent: true },
-    { name: 'Products', path: '/admin-dashboard/products', icon: <FaBox />, isParent: false },
-    { name: 'Categories', path: '/admin-dashboard/categories', icon: <FaTable />, isParent: false },
-    { name: 'Orders', path: '/admin-dashboard/orders', icon: <FaShoppingCart />, isParent: false },
-    { name: 'Suppliers', path: '/admin-dashboard/supplier', icon: <FaTruck />, isParent: false },
-    { name: 'Users', path: '/admin-dashboard/users', icon: <FaUsers />, isParent: false },
-    { name: 'Profile', path: '/admin-dashboard/profile', icon: <FaCog />, isParent: true },
-    { name: 'Logout', path: '/logout', icon: <FaSignOutAlt />, isParent: true },
+    { name: t('Dashboard'), path: '/', icon: <FaHome />, isParent: true },
+    { name: t('Products'), path: '/admin-dashboard/products', icon: <FaBox />, isParent: false },
+    { name: t('Categories'), path: '/admin-dashboard/categories', icon: <FaTable />, isParent: false },
+    { name: t('Orders'), path: '/admin-dashboard/orders', icon: <FaShoppingCart />, isParent: false },
+    { name: t('Suppliers'), path: '/admin-dashboard/supplier', icon: <FaTruck />, isParent: false },
+    { name: t('Users'), path: '/admin-dashboard/users', icon: <FaUsers />, isParent: false },
+    { name: t('Profile'), path: '/admin-dashboard/profile', icon: <FaCog />, isParent: true },
+    { name: t('Logout'), path: '/logout', icon: <FaSignOutAlt />, isParent: true },
   ];
 
   const userMenuItems = [
-    { name: 'Products', path: '/employee-dashboard', icon: <FaBox />, isParent: true },
-    { name: 'Orders', path: '/employee-dashboard/orders', icon: <FaShoppingCart />, isParent: false },
-    { name: 'Profile', path: '/employee-dashboard/profile', icon: <FaCog />, isParent: false },
-    { name: 'Logout', path: '/logout', icon: <FaSignOutAlt />, isParent: true },
+    { name: t('Products'), path: '/employee-dashboard', icon: <FaBox />, isParent: true },
+    { name: t('Orders'), path: '/employee-dashboard/orders', icon: <FaShoppingCart />, isParent: false },
+    { name: t('Profile'), path: '/employee-dashboard/profile', icon: <FaCog />, isParent: false },
+    { name: t('Logout'), path: '/logout', icon: <FaSignOutAlt />, isParent: true },
   ];
 
-  const [itemsToRender, setItemsToRender] = useState(userMenuItems);
-  // let itemsToRender = userMenuItems;
-
-  useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('ims_user'));
-    if (user && user.role === 'admin') {
-      setItemsToRender(menuItems);
-      // itemsToRender = menuItems;
-    }
-  }, []);
+  const itemsToRender = user && user.role === 'admin' ? menuItems : userMenuItems;
 
   return (
-    <div className="fixed h-screen bg-gray-800 text-white w-16 md:w-64 flex flex-col">
-      {/* Logo or Branding (optional) */}
+    <div
+      className={`fixed h-screen bg-gray-800 text-white w-16 md:w-64 flex flex-col ${
+        language === 'ar' ? 'text-right' : 'text-left'
+      }`}
+    >
       <div className="h-16 flex items-center justify-center md:justify-start md:pl-6">
-        <span className="hidden md:block text-xl font-bold">Inventory MS</span>
-        <span className="block md:hidden text-xl font-bold">IMS</span>
+        <span className="hidden md:block text-xl font-bold">{t('title')}</span>
+        <span className="block md:hidden text-xl font-bold">{t('shortTitle')}</span>
       </div>
 
-      {/* Menu Items */}
       <nav className="flex-1">
         <ul className="space-y-2 p-2">
           {itemsToRender.map((item, index) => (
@@ -60,6 +96,7 @@ const Sidebar = () => {
             </li>
           ))}
         </ul>
+       
       </nav>
     </div>
   );
