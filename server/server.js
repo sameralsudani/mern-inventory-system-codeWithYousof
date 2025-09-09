@@ -12,11 +12,6 @@ import connectToMongoDB from "./db/connectToMongoDB.js";
 
 const app = express()
 
-const allowedOrigins = [
-	'http://localhost:5173', // For local development
-	'https://mern-inventory-system-code-with-you-phi.vercel.app' // Replace with your actual Vercel frontend URL
-];
-
 app.use(express.static('public'));
 app.use(cors())
 app.use(express.json());
