@@ -18,13 +18,7 @@ const allowedOrigins = [
 ];
 
 app.use(express.static('public'));
-app.use(
-	cors({
-	  origin: "https://mern-inventory-system-code-with-you-phi.vercel.app",
-	  credentials: true,
-	})
-  );
-
+app.use(cors())
 app.use(express.json());
 
 app.use("/api/dashboard", dashboardRouter);
