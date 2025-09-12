@@ -7,8 +7,15 @@ import productRouter from './routes/product.js';
 import userRouter from './routes/user.js';
 import orderRouter from './routes/order.js';
 import dashboardRouter from './routes/dashboard.js';
+import { v2 as cloudinary } from "cloudinary";
 
 import connectToMongoDB from "./db/connectToMongoDB.js";
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 const app = express()
 
@@ -23,6 +30,9 @@ app.use("/api/category", categoryRouter);
 app.use("/api/products", productRouter);
 app.use("/api/users", userRouter);
 app.use("/api/order", orderRouter);
+
+app.use("/images",express.static('uploads'))
+
 
 app.listen(process.env.PORT, () => {
 	connectToMongoDB();

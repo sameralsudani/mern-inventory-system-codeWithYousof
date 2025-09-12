@@ -1,7 +1,7 @@
 import { createContext, useState, useContext } from "react";
+import PropTypes from "prop-types";
 
 export const AuthContext = createContext();
-
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
     // Initialize user from localStorage on mount
@@ -27,6 +27,11 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
+
+AuthProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
 
 export const useAuth = () => useContext(AuthContext);
 export default AuthProvider;

@@ -3,18 +3,18 @@ import { LanguageProvider } from "./context/LanguageContext"; // Import Language
 import Navbar from "./components/Navbar"; // Import Navbar
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
-import Summary from "./components/Summary";
+import Summary from "./pages/Summary";
 import AuthProvider from "./context/AuthContext";
 import Root from "./utils/Root";
 import ProtectedRoute from "./utils/ProtectedRoute";
-import Products from "./components/Products";
-import Categories from "./components/Categories";
-import Suppliers from "./components/Suppliers";
-import Users from "./components/Users";
+import Products from "./pages/Products";
+import Categories from "./pages/Categories";
+import Suppliers from "./pages/Suppliers";
+import Users from "./pages/Users";
 import Logout from "./components/Logout";
 import EmployeeProducts from "./components/EmployeeProducts";
-import Orders from "./components/Orders";
-import Profile from "./components/Profile";
+import Orders from "./pages/Orders";
+import Profile from "./pages/Profile";
 
 const App = () => (
   <AuthProvider>
