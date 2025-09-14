@@ -16,10 +16,10 @@ const ProductDisplay = ({ category, products }) => {
     const t = (key) => (translations[language] && translations[language][key]) || key;
 
   return (
-    <div className="food-display" id="food-display">
+    <div className="product-display-container my-8 px-2 sm:px-4 md:px-8 w-full max-w-full mx-auto">
       <h2 className="text-2xl font-bold mb-6 mt-16">{t("topProducts")}</h2>
       <div className="bg-white rounded-2xl shadow-lg p-4">
-        <div className="food-display-list grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="food-display-list grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3">
           {products.map((item) => {
             if (category === "All" || category === item.category.name) {
               return (

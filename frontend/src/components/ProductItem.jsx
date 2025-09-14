@@ -17,7 +17,7 @@ const ProductItem = ({ image, name, price,id }) => {
 
   return (
     <div
-      className={`food-item w-80 h-[340px] bg-white border border-gray-200 rounded-xl shadow-md p-4 flex flex-col items-center justify-between mx-auto transition-transform hover:-translate-y-1 hover:shadow-lg duration-200 ${
+      className={`food-item w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg h-[340px] bg-white border border-gray-200 rounded-xl shadow-md p-4 flex flex-col items-center justify-between mx-auto transition-transform hover:-translate-y-1 hover:shadow-lg duration-200 ${
         isRTL ? "direction-rtl" : ""
       }`}
       dir={isRTL ? "rtl" : "ltr"}
