@@ -7,7 +7,7 @@ const ProductTable = ({
   loading,
   handleOrderClick,
 }) => (
-  <div className="overflow-x-auto sm:overflow-x-visible bg-white rounded-lg shadow">
+  <div className="overflow-x-auto bg-white rounded-lg shadow">
     <table className="min-w-[700px] w-full">
       <thead>
         <tr className="bg-gray-100">
