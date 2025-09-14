@@ -19,7 +19,7 @@ const ProductDisplay = ({ category, products }) => {
     <div className="food-display" id="food-display">
       <h2 className="text-2xl font-bold mb-6 mt-16">{t("topProducts")}</h2>
       <div className="bg-white rounded-2xl shadow-lg p-4">
-        <div className="food-display-list grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3">
+        <div className="food-display-list grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
           {products.map((item) => {
             if (category === "All" || category === item.category.name) {
               return (
@@ -27,8 +27,8 @@ const ProductDisplay = ({ category, products }) => {
                   key={item._id}
                   image={item.imageUrl}
                   name={item.name}
-                  desc={item.description}
                   price={item.price}
+                  id={item._id}
                 />
               );
             }

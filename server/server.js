@@ -7,6 +7,8 @@ import productRouter from './routes/product.js';
 import userRouter from './routes/user.js';
 import orderRouter from './routes/order.js';
 import dashboardRouter from './routes/dashboard.js';
+import cartRouter from "./routes/cart.js"
+
 import { v2 as cloudinary } from "cloudinary";
 
 import connectToMongoDB from "./db/connectToMongoDB.js";
@@ -30,6 +32,7 @@ app.use("/api/category", categoryRouter);
 app.use("/api/products", productRouter);
 app.use("/api/users", userRouter);
 app.use("/api/order", orderRouter);
+app.use("/api/cart", cartRouter)
 
 app.use("/images",express.static('uploads'))
 

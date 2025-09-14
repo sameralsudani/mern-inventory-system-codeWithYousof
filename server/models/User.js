@@ -6,7 +6,8 @@ const UserSchema = new mongoose.Schema({
   password: String,
   profilePic: { type: String, default: '' },
   address: {type: String},
-  role: { type: String, enum: ['admin', 'user'], default: 'user' }
+  role: { type: String, enum: ['admin', 'user'], default: 'user' },
+  cartData: { type: Object, default: {} }
 });
 const User = mongoose.model('User', UserSchema);
 export default User;

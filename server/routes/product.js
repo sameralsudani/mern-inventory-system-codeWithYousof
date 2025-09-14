@@ -18,7 +18,6 @@ const upload = multer({
     fileSize: 5 * 1024 * 1024, //5mb
   },
 });
-
 router.post("/add", upload.single("imageFile"), authMiddleware, addProduct);
 router.get("/", authMiddleware, getProducts);
 router.put("/:id", upload.single("imageFile"), authMiddleware, updateProduct);
