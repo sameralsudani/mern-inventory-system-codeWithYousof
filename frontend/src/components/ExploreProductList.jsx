@@ -22,7 +22,7 @@ const ExploreProductList = ({ category: selectedCategory, setCategory, categorie
     <div className='explore-menu mt-16' id='explore-menu'>
       <h1 className="text-2xl font-extrabold mb-4">{t("exploreTitle")}</h1>
       <p className='explore-menu-text'>{t("exploreText")}</p>
-      <div className="mt-8 explore-menu-list flex flex-row gap-12 overflow-x-auto py-4 px-2">
+      <div className="mt-8 explore-menu-list flex flex-row gap-12 py-4 px-2 overflow-x-auto whitespace-nowrap">
         {categories.map((category, index) => (
           <div
             onClick={() =>
@@ -31,7 +31,7 @@ const ExploreProductList = ({ category: selectedCategory, setCategory, categorie
               )
             }
             key={index}
-            className="explore-menu-list-item flex flex-col items-center cursor-pointer"
+            className="explore-menu-list-item flex flex-col items-center cursor-pointer min-w-[140px]"
           >
             <img
               src={category.imageUrl || ""}

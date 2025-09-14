@@ -7,6 +7,9 @@ import { LanguageProvider } from "./context/LanguageContext";
 import StoreContextProvider from "./context/StoreContext.jsx";
 import { Toaster } from "react-hot-toast";
 
+// Add overflow-y-hidden to the body using a global style
+document.body.style.overflowY = "hidden";
+
 createRoot(document.getElementById("root")).render(
   <AuthProvider>
     <StoreContextProvider>

@@ -3,6 +3,7 @@ import axiosInstance from "./../utils/api";
 import { useLanguage } from "../context/LanguageContext"; // Import useLanguage hook
 import ExploreProductList from "../components/ExploreProductList"; // Import ExploreProductList component
 import FoodDisplay from "../components/ProductDisplay"; // Import ExploreProductList component
+import ProductTable from "../components/ProductTable"; // Import ProductTable component
 
 const EmployeeProducts = () => {
   const { language } = useLanguage(); // Get the current language from context
@@ -188,94 +189,14 @@ const EmployeeProducts = () => {
         </div>
 
         {/* Products Table */}
-        <div className="overflow-x-auto bg-white rounded-lg shadow">
-          <table className="min-w-full">
-            <thead>
-              <tr className="bg-gray-100">
-                <th
-                  className={`p-2 ${
-                    language === "ar" ? "text-right" : "text-left"
-                  }`}
-                >
-                  {t("image")}
-                </th>
-                <th
-                  className={`p-2 ${
-                    language === "ar" ? "text-right" : "text-left"
-                  }`}
-                >
-                  {t("id")}
-                </th>
-                <th
-                  className={`p-2 ${
-                    language === "ar" ? "text-right" : "text-left"
-                  }`}
-                >
-                  {t("name")}
-                </th>
-                <th
-                  className={`p-2 ${
-                    language === "ar" ? "text-right" : "text-left"
-                  }`}
-                >
-                  {t("category")}
-                </th>
-                <th
-                  className={`p-2 ${
-                    language === "ar" ? "text-right" : "text-left"
-                  }`}
-                >
-                  {t("price")}
-                </th>
-                <th
-                  className={`p-2 ${
-                    language === "ar" ? "text-right" : "text-left"
-                  }`}
-                >
-                  {t("stock")}
-                </th>
-                <th
-                  className={`p-2 ${
-                    language === "ar" ? "text-right" : "text-left"
-                  }`}
-                >
-                  {t("action")}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {filterProducts.map((product, index) => (
-                <tr key={product._id} className="border-t">
-                  <td className="p-2">
-                    <img
-                      src={product.imageUrl || "/images/placeholder.png"}
-                      alt={product.name}
-                      className={`w-12 h-12 object-cover rounded-full ${
-                        language === "ar" ? "mr-0 ml-auto" : "ml-0 mr-auto"
-                      }`}
-                    />
-                  </td>
-                  <td className="p-2">{index + 1}</td>
-                  <td className="p-2">{product.name}</td>
-                  <td className="p-2">{product.category.name}</td>
-                  <td className="p-2">${product.price}</td>
-                  <td className="p-2">{product.stock}</td>
-                  <td className="p-2">
-                    <button
-                      onClick={() => handleOrderClick(product)}
-                      className="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600 disabled:bg-green-300"
-                      disabled={loading || product.stock === 0}
-                    >
-                      {t("order")}
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          {filterProducts.length === 0 && !loading && (
-            <p className="text-center p-4 text-gray-500">{t("noProducts")}</p>
-          )}
+        <div className="overflow-x-auto sm:overflow-x-visible bg-white rounded-lg shadow">
+          <ProductTable
+            language={language}
+            t={t}
+            filterProducts={filterProducts}
+            loading={loading}
+            handleOrderClick={handleOrderClick}
+          />
         </div>
 
         <ExploreProductList
