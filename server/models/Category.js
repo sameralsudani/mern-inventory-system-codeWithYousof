@@ -12,6 +12,17 @@ const categorySchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
+  imageUrl: {
+    type: String,
+    required: [true, 'Image URL is required'],
+    trim: true,
+    validate: {
+      validator: function(v) {
+        return /^https?:\/\/.+/.test(v);
+      },
+      message: props => `${props.value} is not a valid URL`
+    }
+  },
   createdAt: {
     type: Date,
     default: Date.now,

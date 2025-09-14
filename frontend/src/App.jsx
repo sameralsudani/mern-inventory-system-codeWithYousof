@@ -12,7 +12,7 @@ import Categories from "./pages/Categories";
 import Suppliers from "./pages/Suppliers";
 import Users from "./pages/Users";
 import Logout from "./components/Logout";
-import EmployeeProducts from "./components/EmployeeProducts";
+import EmployeeProducts from "./pages/EmployeeProducts";
 import Orders from "./pages/Orders";
 import Profile from "./pages/Profile";
 

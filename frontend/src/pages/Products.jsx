@@ -246,7 +246,7 @@ const Products = () => {
                       language === "ar" ? "text-right" : "text-left"
                     } text-gray-600`}
                   >
-                    {product.category.name}
+                    {product.category?.name}
                   </td>
                   <td
                     className={`px-4 py-2 ${

@@ -2,6 +2,8 @@
 import { useState, useEffect } from "react";
 import axiosInstance from "../utils/api";
 import { useLanguage } from "../context/LanguageContext"; // Import useLanguage hook
+import AddCategoryForm from "../components/forms/AddCategoryForm";
+import EditCategoryForm from "../components/forms/EditCategoryForm";
 
 const Categories = () => {
   const { language } = useLanguage(); // Get the current language from context
@@ -21,6 +23,7 @@ const Categories = () => {
       cancel: "Cancel",
       searchPlaceholder: "Search categories...",
       id: "ID",
+      image: "Image", // Add this key to your translations
       name: "Name",
       actions: "Actions",
       edit: "Edit",
@@ -41,6 +44,7 @@ const Categories = () => {
       cancel: "إلغاء",
       searchPlaceholder: "ابحث عن الفئات...",
       id: "المعرف",
+      image: "صورة", // Add this key to your translations
       name: "الاسم",
       actions: "الإجراءات",
       edit: "تعديل",
@@ -54,8 +58,6 @@ const Categories = () => {
 
   const [categories, setCategories] = useState([]);
   const [filteredCategories, setFilteredCategories] = useState([]);
-  const [formCategory, setFormCategory] = useState("");
-  const [formDescription, setFormDescription] = useState("");
   const [editingId, setEditingId] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -82,58 +84,6 @@ const Categories = () => {
     fetchCategories();
   }, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!formCategory.trim()) return;
-
-    setLoading(true);
-    if (editingId) {
-      try {
-        const response = await axiosInstance.put(
-          `/category/${editingId}`,
-          { formCategory, formDescription },
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("ims_token")}`,
-            },
-          }
-        );
-        if (response.data.success) {
-          fetchCategories();
-        }
-        setEditingId(null);
-      } catch (error) {
-        alert(error.message);
-      } finally {
-        setLoading(false);
-      }
-    } else {
-      // Add new category
-      try {
-        const token = localStorage.getItem("ims_token");
-        const response = await axiosInstance.post(
-          "/category/add",
-          { formCategory, formDescription },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        if (response.data.success) {
-          fetchCategories();
-        }
-      } catch (error) {
-        alert(error.message);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    setFormCategory("");
-    setFormDescription("");
-  };
-
   const handleSearchInput = (e) => {
     setFilteredCategories(
       categories.filter((category) =>
@@ -151,9 +101,7 @@ const Categories = () => {
         },
       });
       if (response.data.success) {
-        setCategories((prev) =>
-          prev.filter((category) => category._id !== id)
-        );
+        setCategories((prev) => prev.filter((category) => category._id !== id));
         setFilteredCategories((prev) =>
           prev.filter((category) => category._id !== id)
         );
@@ -171,14 +119,6 @@ const Categories = () => {
 
   const handleEdit = (category) => {
     setEditingId(category._id);
-    setFormCategory(category.name);
-    setFormDescription(category.description);
-  };
-
-  const handleCancelEdit = () => {
-    setEditingId(null);
-    setFormCategory("");
-    setFormDescription("");
   };
 
   return (
@@ -195,61 +135,20 @@ const Categories = () => {
 
       <div className="flex flex-col lg:flex-row gap-6">
         {/* Left Column - Add/Edit Form */}
-        <div className="lg:w-1/3">
-          <div className="bg-white p-4 rounded-lg shadow">
-            <h2 className="text-lg font-semibold mb-4">
-              {editingId ? t("editCategory") : t("addCategory")}
-            </h2>
-            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  {t("categoryName")}
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={formCategory}
-                  onChange={(e) => setFormCategory(e.target.value)}
-                  placeholder={t("enterCategoryName")}
-                  className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  {t("description")}
-                </label>
-                <textarea
-                  value={formDescription}
-                  onChange={(e) => setFormDescription(e.target.value)}
-                  placeholder={t("categoryDescription")}
-                  className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  rows="3"
-                />
-              </div>
-              <div className="flex gap-2">
-                <button
-                  type="submit"
-                  className={`flex-1 ${
-                    editingId
-                      ? "bg-green-500 hover:bg-green-600"
-                      : "bg-blue-500 hover:bg-blue-600"
-                  } text-white px-4 py-2 rounded-md`}
-                >
-                  {editingId ? t("saveChanges") : t("add")}
-                </button>
-                {editingId && (
-                  <button
-                    type="button"
-                    onClick={handleCancelEdit}
-                    className="flex-1 bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600"
-                  >
-                    {t("cancel")}
-                  </button>
-                )}
-              </div>
-            </form>
-          </div>
-        </div>
+        {!editingId?<AddCategoryForm
+          onClose={() => {
+            setEditingId(null);
+          }}
+        />
+        :<EditCategoryForm
+          onClose={() => {
+            setEditingId(null);
+          }}
+          category={
+            editingId ? categories.find((cat) => cat._id === editingId) : null
+          }
+        />}
+      
 
         {/* Right Column - Table and Search */}
         <div className="lg:w-2/3">
@@ -266,13 +165,32 @@ const Categories = () => {
             <table className="min-w-full">
               <thead>
                 <tr className="bg-gray-100">
-                  <th className={`p-2 ${language === "ar" ? "text-right" : "text-left"}`}>
+                  <th
+                    className={`p-2 ${
+                      language === "ar" ? "text-right" : "text-left"
+                    }`}
+                  >
                     {t("id")}
                   </th>
-                  <th className={`p-2 ${language === "ar" ? "text-right" : "text-left"}`}>
+                  <th
+                    className={`p-2 ${
+                      language === "ar" ? "text-right" : "text-left"
+                    }`}
+                  >
+                    {t("image")}
+                  </th>
+                  <th
+                    className={`p-2 ${
+                      language === "ar" ? "text-right" : "text-left"
+                    }`}
+                  >
                     {t("name")}
                   </th>
-                  <th className={`p-2 ${language === "ar" ? "text-right" : "text-left"}`}>
+                  <th
+                    className={`p-2 ${
+                      language === "ar" ? "text-right" : "text-left"
+                    }`}
+                  >
                     {t("actions")}
                   </th>
                 </tr>
@@ -280,13 +198,38 @@ const Categories = () => {
               <tbody>
                 {filteredCategories.map((category, index) => (
                   <tr key={index} className="border-t">
-                    <td className={`p-2 ${language === "ar" ? "text-right" : "text-left"}`}>
+                    <td
+                      className={`p-2 ${
+                        language === "ar" ? "text-right" : "text-left"
+                      }`}
+                    >
                       {index + 1}
                     </td>
-                    <td className={`p-2 ${language === "ar" ? "text-right" : "text-left"}`}>
+                    <td
+                      className={`p-2 ${
+                        language === "ar" ? "text-right" : "text-left"
+                      }`}
+                    >
+                      <img
+                        src={category.imageUrl || "/images/placeholder.png"}
+                        alt={category.name}
+                        className={`w-12 h-12 object-cover rounded-full ${
+                          language === "ar" ? "ml-auto" : "mr-auto"
+                        }`}
+                      />
+                    </td>
+                    <td
+                      className={`p-2 ${
+                        language === "ar" ? "text-right" : "text-left"
+                      }`}
+                    >
                       {category.name}
                     </td>
-                    <td className={`p-2 ${language === "ar" ? "text-right" : "text-left"} flex gap-2`}>
+                    <td
+                      className={`p-2 ${
+                        language === "ar" ? "text-right" : "text-left"
+                      } flex gap-2`}
+                    >
                       <button
                         onClick={() => handleEdit(category)}
                         className="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600"
@@ -306,7 +249,9 @@ const Categories = () => {
               </tbody>
             </table>
             {filteredCategories.length === 0 && (
-              <p className="text-center p-4 text-gray-500">{t("noCategories")}</p>
+              <p className="text-center p-4 text-gray-500">
+                {t("noCategories")}
+              </p>
             )}
           </div>
         </div>
