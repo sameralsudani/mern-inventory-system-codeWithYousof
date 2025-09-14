@@ -19,7 +19,7 @@ const ProductDisplay = ({ category, products }) => {
     <div className="my-8 w-full max-w-xs px-2 sm:max-w-full sm:px-0">
       <h2 className="text-2xl font-bold mb-6 mt-16">{t("topProducts")}</h2>
       <div className="bg-white rounded-2xl shadow-lg p-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 gap-3 justify-start">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 justify-start">
           {products.map((item) => {
             if (category === "All" || category === item.category.name) {
               return (
