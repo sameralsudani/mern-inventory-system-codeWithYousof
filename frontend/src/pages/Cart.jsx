@@ -1,8 +1,8 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { StoreContext } from "../context/StoreContext";
+import Invoice from "../components/Invoice";
 import { useLanguage } from "../context/LanguageContext";
 import axiosInstance from "./../utils/api";
-import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 // Simple local translation object
@@ -42,7 +42,9 @@ const translations = {
 const Cart = () => {
   const { language } = useLanguage();
   const t = (key) => translations[language][key] || key;
-  const navigate = useNavigate();
+
+  const [orderInfo, setOrderInfo] = useState();
+  const [showInvoice, setShowInvoice] = useState(false);
 
   const {
     cartItems,
@@ -75,7 +77,8 @@ const Cart = () => {
       },
     });
     if (response.data.success) {
-      navigate("/employee-dashboard/orders");
+      setOrderInfo(response.data.order);
+      setShowInvoice(true);
       toast.success(response.data.message);
       setCartItems({});
     } else {
@@ -185,6 +188,9 @@ const Cart = () => {
           </div>
         </div>
       </div>
+      {showInvoice && (
+        <Invoice orderInfo={orderInfo} setShowInvoice={setShowInvoice} />
+      )}
     </div>
   );
 };

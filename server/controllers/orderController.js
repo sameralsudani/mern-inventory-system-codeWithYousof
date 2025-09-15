@@ -43,10 +43,10 @@ const placeOrder = async (req, res) => {
       address: req.body.address,
       payment: true,
     });
-    await newOrder.save();
+    const order = await newOrder.save();
     await User.findByIdAndUpdate(req.body.userId, { cartData: {} });
 
-    res.json({ success: true, message: "Order Placed" });
+    res.json({ success: true, message: "Order Placed", order });
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: "Error" });
