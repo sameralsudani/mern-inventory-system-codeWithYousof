@@ -80,7 +80,7 @@ const MyOrders = () => {
           <div className="overflow-x-auto">
             <table className="min-w-full bg-white rounded-xl shadow-md border border-gray-200 text-left">
               <thead>
-                <tr className="bg-blue-100 text-gray-700">
+                <tr className={`bg-blue-100 text-gray-700 ${language === "ar" ? "text-right" : "text-left"}`}>
                   <th className="p-3 font-semibold">{t("number")}</th>
                   <th className="p-3 font-semibold">{t("icon")}</th>
                   <th className="p-3 font-semibold">{t("items")}</th>
@@ -95,29 +95,31 @@ const MyOrders = () => {
                     key={order._id || index}
                     className="border-b hover:bg-gray-50"
                   >
-                    <td className="p-3 align-top">{index + 1}</td>
-                    <td className="p-3 align-top">
+                    <td className={`p-3 align-top ${language === "ar" ? "text-right" : ""}`}>
+                      {index + 1}
+                    </td>
+                    <td className={`p-3 align-top ${language === "ar" ? "text-right" : ""}`}>
                       <img
                         src={assets.parcel_icon}
                         alt=""
                         className="w-8 h-8 object-contain rounded-full border border-green-200 bg-green-50"
                       />
                     </td>
-                    <td className="p-3 text-gray-700">
+                    <td className={`p-3 text-gray-700 ${language === "ar" ? "text-right" : ""}`}>
                       {order.items.map((item, idx) => (
                         <div key={idx}>
                           {item.name} x {item.quantity}
                         </div>
                       ))}
                     </td>
-                    <td className="p-3 font-bold text-green-700 align-top">
+                    <td className={`p-3 font-bold text-green-700 align-top ${language === "ar" ? "text-right" : ""}`}>
                       {currency}
                       {order.amount}.00
                     </td>
-                    <td className="p-3 text-gray-600 align-top">
+                    <td className={`p-3 text-gray-600 align-top ${language === "ar" ? "text-right" : ""}`}>
                       {order.items.length}
                     </td>
-                    <td className="p-3 text-gray-600 align-top">
+                    <td className={`p-3 text-gray-600 align-top ${language === "ar" ? "text-right" : ""}`}>
                       {new Date(order.date).toLocaleDateString(
                         language === "ar" ? "ar-EG" : "en-US"
                       )}
