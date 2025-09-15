@@ -2,7 +2,7 @@ import { useLanguage } from "../context/LanguageContext"; // Import useLanguage 
 import { useAuth } from "../context/AuthContext"; // Import useAuth from context
 import LanguageSwitcher from "./LanguageSwitcher"; // Import LanguageSwitcher
 import { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { StoreContext } from "../context/StoreContext";
 
@@ -50,7 +50,7 @@ const Navbar = () => {
 
       {/* Login Button and Language Switcher */}
       <div className="flex items-center gap-4">
-        {!user && ( // Only show the Login button if the user is not logged in
+        {!user && (
           <button
             onClick={() => navigate("/login")}
             className="bg-white text-green-700 px-4 py-2 rounded hover:bg-gray-200"
@@ -58,7 +58,11 @@ const Navbar = () => {
             {t("login")}
           </button>
         )}
-        <Link to="/cart" className="navbar-search-icon relative">
+        <NavLink
+          to="employee-dashboard/cart"
+          className="navbar-search-icon relative"
+          activeClassName="text-yellow-300"
+        >
           <svg
             className="w-6 h-6"
             fill="white"
@@ -70,8 +74,8 @@ const Navbar = () => {
           {getTotalCartAmount() > 0 && (
             <span className="absolute top-0 right-0 block w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>
           )}
-        </Link>
-        <LanguageSwitcher /> {/* Add LanguageSwitcher here */}
+        </NavLink>
+        <LanguageSwitcher />
       </div>
     </nav>
   );

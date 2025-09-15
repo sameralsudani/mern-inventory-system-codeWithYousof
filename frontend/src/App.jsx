@@ -14,6 +14,7 @@ import Users from "./pages/Users";
 import Logout from "./components/Logout";
 import EmployeeProducts from "./pages/EmployeeProducts";
 import Orders from "./pages/Orders";
+import Cart from "./pages/Cart";
 import Profile from "./pages/Profile";
 
 const App = () => (
@@ -74,6 +75,7 @@ const App = () => (
           >
             <Route index element={<EmployeeProducts />}></Route>
             <Route path="orders" element={<Orders />}></Route>
+            <Route path="cart" element={<Cart />}></Route>
             <Route path="profile" element={<Profile />}></Route>
           </Route>
           <Route path="/logout" element={<Logout />}></Route>

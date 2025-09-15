@@ -5,7 +5,6 @@ const ProductTable = ({
   t,
   filterProducts,
   loading,
-  handleOrderClick,
 }) => (
   <div className="overflow-x-auto bg-white rounded-lg shadow">
     <table className="min-w-[700px] w-full">
@@ -17,7 +16,6 @@ const ProductTable = ({
           <th className={`p-2 ${language === "ar" ? "text-right" : "text-left"} text-xs sm:text-sm`}>{t("category")}</th>
           <th className={`p-2 ${language === "ar" ? "text-right" : "text-left"} text-xs sm:text-sm`}>{t("price")}</th>
           <th className={`p-2 ${language === "ar" ? "text-right" : "text-left"} text-xs sm:text-sm`}>{t("stock")}</th>
-          <th className={`p-2 ${language === "ar" ? "text-right" : "text-left"} text-xs sm:text-sm`}>{t("action")}</th>
         </tr>
       </thead>
       <tbody>
@@ -37,15 +35,7 @@ const ProductTable = ({
             <td className="p-2 text-xs sm:text-sm">{product.category.name}</td>
             <td className="p-2 text-xs sm:text-sm">${product.price}</td>
             <td className="p-2 text-xs sm:text-sm">{product.stock}</td>
-            <td className="p-2">
-              <button
-                onClick={() => handleOrderClick(product)}
-                className="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600 disabled:bg-green-300 text-xs sm:text-sm"
-                disabled={loading || product.stock === 0}
-              >
-                {t("order")}
-              </button>
-            </td>
+          
           </tr>
         ))}
       </tbody>
